@@ -105,12 +105,26 @@ const arrOfMass = [
   59677
 ];
 
-const getSingleFuelAmount = mass => Math.floor(mass/3) - 2
+const getArrSum = arr => arr.reduce((acc, value) => acc + value)
 
-const getTotalFuelAmount = (arrOfMass, cb) => {
-    const arrOfFuel = arrOfMass.map(mass => cb(mass));
-    const totalFuel = arrOfFuel.reduce((accumulator, currentValue) => accumulator + currentValue)
-    console.log('TOTAL FUEL', totalFuel)
+function getSingleFuelAmount(mass) {
+  let aux = 0
+  let fuel = Math.floor(mass/3) - 2
+  if (fuel > 6) {
+    aux += getSingleFuelAmount(fuel)
+  }
+  aux += fuel
+  return aux
 }
 
-getTotalFuelAmount(arrOfMass, getSingleFuelAmount)
+const getTotalFuelAmount = (arr, cb) => {
+  const arrOfFuel = arr.map(mass => cb(mass))
+  const totalFuel = getArrSum(arrOfFuel)
+  return totalFuel
+}
+
+// console.log(getSingleFuelAmount(14))
+// console.log(getSingleFuelAmount(1969))
+// console.log(getSingleFuelAmount(100756))
+
+console.log(getTotalFuelAmount(arrOfMass, getSingleFuelAmount))
